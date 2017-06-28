@@ -1,0 +1,116 @@
+/*
+Mastering JavaScript, Premium Edition
+by James Jaworski 
+
+ISBN:078212819X
+Publisher Sybex CopyRight 2001
+
+Used as starter for my Hangman project. - Bill Roush 6/27/2017
+*/
+
+<HTML>
+  <HEAD>
+    <TITLE>Hangman</TITLE>
+
+  <SCRIPT LANGUAGE="JavaScript">
+
+    // Creates an array that lists out each segment of the Hanged Man.
+    var gallows = ["--------\n|      |\n|\n|\n|\n|\n=====",
+    "--------\n|      O\n|\n|\n|\n|\n=====",
+    "--------\n|      O\n|      |\n|\n|\n|\n=====",
+    "--------\n|      O\n|     \\|\n|\n|\n|\n=====",
+    "--------\n|      O\n|     \\|/\n|\n|\n|\n=====",
+    "--------\n|      O\n|     \\|/\n|      |\n|\n|\n=====",
+    "--------\n|      O\n|     \\|/\n|      |\n|     /\n|\n=====",
+    "--------\n|      O\n|     \\|/\n|      |\n|     / \\\n|\n====="];
+
+    // Creates an array that lists out each game word.
+    var game_words = ["Exodus","Megadeth","Overkill","Scorpions"];
+
+    function startAgain() {
+     var guesses = 0
+     var max = gallows.length-1
+     var guessed = " "
+     var len = game_words.length - 1
+     var badGuess = game_words[Math.round(len*Math.random())].toUpperCase()
+     displayHangman()
+     displaybadGuess()
+     displayGuessed()
+    // This function is run whenever the user presses a key.
+        document.onkeyup = function(event) {
+
+          // Determines which key was pressed.
+          var userGuess = event.key;
+     // document.game.status.value=gallows[guesses]
+    }
+
+    }
+        function stayAway() {
+     document.game.elements[3].focus()
+     alert("Don't mess with this form element!")
+    }
+    function displayHangman() {
+     document.game.status.value=gallows[guesses]
+    }
+
+    function displaybadGuess() {
+     pattern=""
+     for(i=0;i<badGuess.length;++i) {
+      if(guessed.indexOf(badGuess.charAt(i)) != -1)
+       pattern += (badGuess.charAt(i)+" ")
+      else pattern += "_ "
+     }
+     document.game.badGuess.value=pattern
+    }
+    function displayGuessed() {
+     document.game.guessed.value=guessed
+    }
+    function badGuess(s) {
+     if(badGuess.indexOf(s) == -1) return true
+     return false
+    }
+    function winner() {
+     for(i=0;i<badGuess.length;++i) {
+      if(guessed.indexOf(badGuess.charAt(i)) == -1) return false
+     }
+     return true
+        }
+    function guess(s){
+     if(guessed.indexOf(s) == -1) guessed = s + guessed
+     if(badGuess(s)) ++guesses
+     displayHangman()
+     displaybadGuess()
+     displayGuessed()
+     if(guesses >= max){
+     alert("You're dead. The word you missed was "+badGuess+".")
+      startAgain()
+     }
+     if(winner()) {
+      alert("You won!")
+      startAgain()
+     }
+    }
+// --></SCRIPT>
+</HEAD>
+<BODY>
+<H1>Hangman</H1>
+<FORM NAME="game">
+<PRE>
+<TEXTAREA NAME="status" ROWS="7" COLS="16"
+ ONFOCUS="stayAway()"></TEXTAREA>
+</PRE><P>
+<INPUT TYPE="TEXT" NAME="badGuess"
+ ONFOCUS="stayAway()"> Word to guess<BR>
+<INPUT TYPE="TEXT" NAME="guessed"
+ ONFOCUS="stayAway()"> Letters guessed so far<BR>
+<P>Enter your next guess.</P>
+
+<INPUT TYPE="BUTTON" NAME="restart" VALUE="---- Start Again ----"
+ ONCLICK="startAgain()">
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+startAgain()
+// --></SCRIPT>
+</FORM>
+</BODY>
+</HTML>
